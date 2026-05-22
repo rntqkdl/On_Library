@@ -1,6 +1,7 @@
 <div align="center">
-  <img src="./assets/on_library_cover.png" alt="온서관 프로젝트 대표 이미지" width="100%" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4ECDC4,100:2C7BE5&height=320&section=header&text=ON%20LIBRARY&fontSize=80&fontColor=FFFFFF&animation=fadeIn" />
 </div>
+
 # 📚 온서관 On Library
 
 > **책이 내게 오는 이동식 도서관 노선 최적화 MVP**  
