@@ -1,0 +1,30 @@
+﻿# Python
+.venv/
+__pycache__/
+*/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Secrets
+.env
+
+# System
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Root-level raw data duplicates
+/*.csv
+/*.xlsx
+/*.xls
+
+# Keep organized data folder
+!data/
+!data/**
+
+# Optional: generated output
+# output/

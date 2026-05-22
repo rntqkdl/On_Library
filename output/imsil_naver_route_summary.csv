@@ -1,0 +1,4 @@
+﻿route,region,hub_name,stop_count,total_drive_km,total_drive_min,total_stop_min,total_operation_min,operation_status
+임실 1호차,임실군,임실군립도서관,6,85.72,110.2,180,290.2,운영 가능
+임실 2호차,임실군,임실군립도서관,6,93.82,102.4,180,282.4,운영 가능
+임실 3호차,임실군,임실군립도서관,6,93.09,98.5,180,278.5,운영 가능
