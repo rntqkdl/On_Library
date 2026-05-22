@@ -26,5 +26,10 @@ Thumbs.db
 !data/
 !data/**
 
-# Optional: generated output
-# output/
+# Keep source files
+!google_route_optimizer.py
+!mvp_app.py
+!README.md
+!requirements.txt
+!.env.example
+!.gitignore
