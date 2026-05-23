@@ -114,8 +114,8 @@
 
 | 지표           | 의미                                             | 활용 데이터                                               |
 | -------------- | ------------------------------------------------ | --------------------------------------------------------- |
-| 수요지수       | 고령층·청소년 이용 가능성이 높은 지역인지 평가   | 진안·임실 연령별 인구현황                                 |
-| 접근성지수     | 후보지 주변 대중교통 접근성이 좋은지 평가        | 전북 버스정류장 위치 데이터                               |
+| 수요지수       | 고령층·청소년 이용 가능성이 높은 지역인지 평가   | 연령별 인구 데이터                                        |
+| 접근성지수     | 후보지 주변 대중교통 접근성이 좋은지 평가        | 버스정류장 위치 데이터                                    |
 | 공공거점지수   | 주민 공동 이용 가능성이 높은 공공시설인지 평가   | 경로당, 마을회관, 학교, 보건시설, 문화시설, 터미널 데이터 |
 | 운영가능성지수 | 이동식 도서관 버스가 정차·운영하기 적합한지 평가 | 시설 유형별 운영 기준값                                   |
 
@@ -257,8 +257,9 @@ TAGO 버스노선정보 API는 향후 교통소외 보정지표를 고도화하�
 - 실제 도로 기반 지도 표시
 - 노선별 운영표
 - 구간별 상세표
-- 총 운영시간 그래프
-- 총 주행거리 그래프
+- 후보지 선정 근거표
+- 노선 운영 판단 근거표
+- TAGO API 연계 현황
 - CSV 다운로드
 
 <br/>
@@ -309,71 +310,73 @@ TAGO 버스노선정보 API는 향후 교통소외 보정지표를 고도화하�
 
 ```text
 On_Library/
-├─ naver_route_optimizer.py          # Naver API 기반 노선 최적화 메인 코드
-├─ google_route_optimizer.py         # 기존 백업 코드
-├─ mvp_app.py                        # Streamlit MVP 대시보드
-├─ requirements.txt                  # Python 패키지 목록
-├─ README.md                         # 프로젝트 설명 문서
-├─ .env.example                      # 환경변수 예시 파일
+├─ naver_route_optimizer.py              # Naver API 기반 노선 최적화 메인 코드
+├─ google_route_optimizer.py             # 기존 백업 코드
+├─ mvp_app.py                            # Streamlit MVP 대시보드
+├─ requirements.txt                      # Python 패키지 목록
+├─ README.md                             # 프로젝트 설명 문서
+├─ .env.example                          # 환경변수 예시 파일
 ├─ .gitignore
 │
 ├─ assets/
-│  └─ on_library_cover.png            # README 대표 이미지
+│  └─ on_library_cover.png               # README 대표 이미지
 │
 ├─ config/
-│  ├─ on_library_config.yaml          # 운영 기준, 허브, 점수 가중치 설정
-│  ├─ facility_scores.csv             # 시설 유형별 공공성·운영가능성 기준
-│  └─ manual_candidates.csv           # 데이터 기반 최종 후보지 목록
+│  ├─ on_library_config.yaml             # 운영 기준, 허브, 점수 가중치 설정
+│  ├─ facility_scores.csv                # 시설 유형별 공공성·운영가능성 기준
+│  └─ .gitkeep                           # 후보지 CSV는 실행 시 생성
 │
 ├─ data/
-│  ├─ 전북_도서관 위치.csv             # 실행용 도서관 위치 데이터
-│  ├─ 전북_버스정류장_위치.csv         # 실행용 버스정류장 위치 데이터
-│  └─ raw/                            # 원본 공공데이터 모음
+│  ├─ .gitkeep
+│  └─ raw/
+│     └─ .gitkeep                        # 원본 데이터는 저장소에 포함하지 않음
 │
 ├─ output/
-│  ├─ all_naver_route_map.html         # 전체 노선 지도
-│  ├─ jinan_naver_route_map.html       # 진안군 노선 지도
-│  ├─ imsil_naver_route_map.html       # 임실군 노선 지도
-│  ├─ all_naver_route_summary.csv      # 전체 노선 요약표
-│  ├─ all_naver_route_result.csv       # 구간별 상세 결과
-│  └─ site_selection_candidate_scores.csv # 후보지별 입지 적합성 점수
+│  └─ .gitkeep                           # 분석 산출물은 실행 시 생성
 │
 └─ scripts/
-   ├─ prepare_data.py                  # 원본 데이터 정제
-   ├─ check_naver_api.py               # Naver API 연결 확인
-   ├─ check_tago_api.py                # TAGO API 연결 확인
-   ├─ build_site_candidates.py         # 데이터 기반 후보지 점수화
+   ├─ prepare_data.py                    # 원본 데이터 정제
+   ├─ check_naver_api.py                 # Naver API 연결 확인
+   ├─ check_tago_api.py                  # TAGO API 연결 확인
+   ├─ check_tago_citycodes.py            # TAGO 도시코드 확인
+   ├─ build_site_candidates.py           # 데이터 기반 후보지 점수화
+   ├─ build_mvp_decision_tables.py       # 후보지·노선 의사결정 테이블 생성
+   ├─ build_tago_bus_context.py          # TAGO 노선 맥락 데이터 생성
    ├─ patch_naver_optimizer_candidates.py # 최적화 코드에 후보지 적용
-   ├─ build_accessibility_mvp.py       # 접근성 분석 보조 스크립트
-   └─ run_mvp.ps1                      # Streamlit 실행 스크립트
+   ├─ build_accessibility_mvp.py         # 접근성 분석 보조 스크립트
+   └─ run_mvp.ps1                        # Streamlit 실행 스크립트
 ```
 
 <br/>
 
 ## 📊 사용 데이터
 
-| 데이터                         | 활용 목적                                              |
-| ------------------------------ | ------------------------------------------------------ |
-| 전북 도서관 위치 데이터        | 진안·임실 대표 도서관 허브 설정                        |
-| 전북 버스정류장 위치 데이터    | 생활거점 후보지 추출 및 접근성 계산                    |
-| 진안군 연령별 인구현황         | 고령층·청소년 수요지수 계산                            |
-| 임실군 연령별 인구현황         | 고령층·청소년 수요지수 계산                            |
-| 진안군 경로당 현황             | 고령층 생활거점 후보지 생성                            |
-| 진안군 다중이용시설 현황       | 문화·공공 생활거점 후보지 생성                         |
-| 진안군 의료기관 현황           | 보건·의료 생활거점 후보지 생성                         |
-| 진안군 정신건강센터 현황       | 보건복지 거점 후보지 생성                              |
-| 임실군 노인복지시설 현황       | 고령층 생활거점 후보지 생성                            |
-| 임실군 마을회관 현황           | 마을 단위 생활거점 후보지 생성                         |
-| 임실군 문화공간 현황           | 문화복지 후보지 생성                                   |
-| 임실군 문화 및 집회시설 현황   | 공공 문화시설 후보지 생성                              |
-| 임실군 보건지소 및 진료소 현황 | 보건복지 후보지 생성                                   |
-| 임실군 약국 현황               | 생활 의료 접근 거점 후보지 생성                        |
-| 임실군 어린이놀이시설 현황     | 아동·보호자 생활거점 후보지 생성                       |
-| 임실군 주민복지시설 현황       | 복지서비스 거점 후보지 생성                            |
-| 임실군 터미널 현황             | 교통거점 후보지 생성                                   |
-| 임실군 학교 현황               | 청소년 수요 거점 후보지 생성                           |
-| 수도권 도서관·정류장 데이터    | 비교 분석 및 확장 가능성 검토                          |
-| TAGO 버스노선정보 API          | 노선 수, 경유정류장, 배차간격 기반 교통소외지수 고도화 |
+본 프로젝트는 공공데이터를 기반으로 분석을 수행하되, 원본 데이터 파일은 저장소에 포함하지 않습니다.  
+데이터는 사용자가 직접 공공데이터포털, 지자체 데이터 포털, Naver Maps API, TAGO API 등을 통해 내려받아 `data/raw/` 폴더에 배치해야 합니다.
+
+| 데이터 범주            | 활용 목적                                               |
+| ---------------------- | ------------------------------------------------------- |
+| 도서관 위치 데이터     | 진안·임실 대표 도서관 허브 설정                         |
+| 버스정류장 위치 데이터 | 후보지 주변 접근성 계산                                 |
+| 연령별 인구 데이터     | 고령층·청소년 수요지수 계산                             |
+| 경로당·마을회관 데이터 | 고령층 생활거점 후보지 생성                             |
+| 학교·어린이시설 데이터 | 청소년·아동 생활거점 후보지 생성                        |
+| 보건·의료시설 데이터   | 보건복지 거점 후보지 생성                               |
+| 문화·복지시설 데이터   | 문화복지 생활거점 후보지 생성                           |
+| 터미널·교통시설 데이터 | 교통거점 후보지 생성                                    |
+| TAGO 버스노선정보 API  | 노선 수, 경유 정류장, 배차간격 기반 교통소외지수 고도화 |
+
+<br/>
+
+### 데이터 공개 범위
+
+본 저장소에는 개인정보, 원본 공공데이터, API 응답 결과, 분석 산출물 CSV/HTML 파일을 포함하지 않습니다.
+
+- 원본 데이터는 `data/raw/` 폴더에 사용자가 직접 배치합니다.
+- 분석 결과는 `output/` 폴더에 생성되며 GitHub에는 업로드하지 않습니다.
+- API 인증키는 `.env`에 저장하고, 저장소에는 `.env.example`만 포함합니다.
+- 후보지 좌표와 점수 결과가 포함된 산출물은 재현 실행을 통해 생성합니다.
+- `config/manual_candidates.csv`는 실행 과정에서 생성되는 후보지 결과 파일이므로 공개 저장소에서는 제외합니다.
 
 <br/>
 
@@ -500,12 +503,17 @@ Geocoding API 연결 성공
 python scripts/check_tago_api.py
 ```
 
-TAGO API는 공공데이터포털의 버스노선정보조회 서비스를 활용합니다.  
-향후 노선 수, 경유 정류장, 첫차·막차, 배차간격 데이터를 활용하여 교통소외 보정지표를 추가할 수 있습니다.
+<br/>
+
+### 4. TAGO 도시코드 확인
+
+```bash
+python scripts/check_tago_citycodes.py
+```
 
 <br/>
 
-### 4. 데이터 기반 후보지 점수화
+### 5. 데이터 기반 후보지 점수화
 
 ```bash
 python scripts/build_site_candidates.py
@@ -521,7 +529,7 @@ python scripts/build_site_candidates.py
 
 <br/>
 
-### 5. 후보지 설정을 노선 최적화 코드에 적용
+### 6. 후보지 설정을 노선 최적화 코드에 적용
 
 ```bash
 python scripts/patch_naver_optimizer_candidates.py
@@ -529,7 +537,7 @@ python scripts/patch_naver_optimizer_candidates.py
 
 <br/>
 
-### 6. 노선 최적화 실행
+### 7. 노선 최적화 실행
 
 테스트 실행:
 
@@ -545,7 +553,38 @@ python naver_route_optimizer.py --region all --provider naver --data-dir data --
 
 <br/>
 
-### 7. MVP 대시보드 실행
+### 8. MVP 의사결정 테이블 생성
+
+```bash
+python scripts/build_mvp_decision_tables.py
+```
+
+실행 후 아래 파일이 생성됩니다.
+
+| 파일                                      | 설명                  |
+| ----------------------------------------- | --------------------- |
+| `output/mvp_candidate_decision_table.csv` | 후보지 선정 근거표    |
+| `output/mvp_route_decision_summary.csv`   | 노선 운영 판단 요약표 |
+
+<br/>
+
+### 9. TAGO 노선 맥락 데이터 생성
+
+```bash
+python scripts/build_tago_bus_context.py
+```
+
+실행 후 아래 파일이 생성됩니다.
+
+| 파일                               | 설명                              |
+| ---------------------------------- | --------------------------------- |
+| `output/tago_citycodes.csv`        | TAGO 도시코드 목록                |
+| `output/tago_target_citycodes.csv` | 진안·임실·전북 관련 도시코드 후보 |
+| `output/tago_route_list.csv`       | TAGO 노선 목록 조회 결과          |
+
+<br/>
+
+### 10. MVP 대시보드 실행
 
 ```bash
 streamlit run mvp_app.py
@@ -561,7 +600,8 @@ powershell -ExecutionPolicy Bypass -File scripts/run_mvp.ps1
 
 ## 🖥️ 결과물
 
-노선 최적화 실행 후 `output/` 폴더에 다음 파일이 생성됩니다.
+노선 최적화 및 대시보드 실행 과정에서 `output/` 폴더에 다음 파일이 생성됩니다.  
+해당 결과물은 재현 가능한 산출물이므로 GitHub에는 업로드하지 않습니다.
 
 | 파일                                  | 설명                               |
 | ------------------------------------- | ---------------------------------- |
@@ -571,6 +611,9 @@ powershell -ExecutionPolicy Bypass -File scripts/run_mvp.ps1
 | `all_naver_route_summary.csv`         | 노선별 총 주행거리·운영시간 요약   |
 | `all_naver_route_result.csv`          | 구간별 도로거리·주행시간·경로 상세 |
 | `site_selection_candidate_scores.csv` | 후보지별 입지 적합성 점수          |
+| `mvp_candidate_decision_table.csv`    | 후보지 선정 근거표                 |
+| `mvp_route_decision_summary.csv`      | 노선 운영 판단 요약표              |
+| `tago_route_list.csv`                 | TAGO 버스노선정보 API 조회 결과    |
 | `geocode_cache.json`                  | 주소 기반 좌표 변환 결과 캐시      |
 
 <br/>
@@ -625,7 +668,21 @@ powershell -ExecutionPolicy Bypass -File scripts/run_mvp.ps1
 
 <br/>
 
-### 3. 교통소외 보정지표 고도화
+### 3. 후보지 선정 근거표
+
+MVP 대시보드에서는 각 후보지의 선정 근거를 표로 제공합니다.
+
+| 항목           | 설명                                        |
+| -------------- | ------------------------------------------- |
+| 수요지수       | 고령층·청소년 수요 반영                     |
+| 접근성지수     | 최근접 정류장 거리와 500m 내 정류장 수 반영 |
+| 공공거점지수   | 공공시설 유형에 따른 주민 이용 가능성 반영  |
+| 운영가능성지수 | 이동식 도서관 정차 가능성 반영              |
+| 선정근거       | 점수 기준을 해석한 설명 문장                |
+
+<br/>
+
+### 4. 교통소외 보정지표 고도화
 
 TAGO 버스노선정보 API를 활용하면 후보지 주변의 실제 노선 수, 경유 정류장, 첫차·막차, 배차간격을 반영할 수 있습니다.
 
@@ -663,8 +720,11 @@ TAGO 버스노선정보 API를 활용하면 후보지 주변의 실제 노선 �
 6. **운영 가능성 검증**  
    차량당 6개 지점, 지점별 30분 정차 기준으로 360분 이하 운영 가능 여부를 검증합니다.
 
-7. **MVP 대시보드 시연**  
-   Streamlit을 통해 노선 지도, 운영표, 구간 상세표, 그래프를 확인합니다.
+7. **후보지 선정 근거 확인**  
+   Streamlit 대시보드에서 각 후보지의 수요·접근성·공공성·운영가능성 점수와 선정근거를 확인합니다.
+
+8. **TAGO API 연계 현황 확인**  
+   TAGO API를 통해 도시코드와 노선 목록을 확인하고, 향후 배차간격 기반 교통소외지수로 확장합니다.
 
 <br/>
 
@@ -769,6 +829,21 @@ python naver_route_optimizer.py --region all --provider naver --data-dir data --
 
 <br/>
 
+### 문제 7. 후보지 선정 근거표가 보이지 않음
+
+원인:
+
+- `mvp_candidate_decision_table.csv`가 생성되지 않음
+- `build_mvp_decision_tables.py` 실행 전 대시보드를 먼저 실행함
+
+해결:
+
+```bash
+python scripts/build_mvp_decision_tables.py
+```
+
+<br/>
+
 ## 🌱 기대 효과
 
 온서관은 다음과 같은 효과를 기대합니다.
@@ -779,6 +854,7 @@ python naver_route_optimizer.py --region all --provider naver --data-dir data --
 - 고정식 도서관 중심 서비스의 공간적 한계 보완
 - 지자체 이동형 문화복지 사업의 의사결정 지원
 - 공공시설 데이터를 활용한 생활거점 중심 노선 설계
+- 후보지 선정 근거표를 통한 의사결정 투명성 강화
 - 향후 승하차 수요·도서 대출 수요·배차간격·운영비 데이터를 결합한 실증형 모델로 확장 가능
 
 <br/>

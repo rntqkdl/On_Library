@@ -9,27 +9,38 @@ __pycache__/
 # Secrets
 .env
 
+# Raw data
+data/raw/
+raw_data/
+추가자료/
+
+# Generated outputs
+output/
+*.html
+*.log
+
+# Root-level data files
+/*.csv
+/*.xlsx
+/*.xls
+
+# Keep source code and config structure
+!README.md
+!requirements.txt
+!.env.example
+!.gitignore
+!assets/
+!assets/**
+!config/
+!config/**
+
+# But hide generated candidate/result data if needed
+config/manual_candidates.csv
+
 # System
 .ipynb_checkpoints/
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Root-level raw data duplicates
-/*.csv
-/*.xlsx
-/*.xls
-
-# Keep organized data folder
-!data/
-!data/**
-
-# Keep source files
-!google_route_optimizer.py
-!mvp_app.py
-!README.md
-!requirements.txt
-!.env.example
-!.gitignore
+!data/raw/.gitkeep
+!output/.gitkeep
