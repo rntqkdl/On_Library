@@ -1,0 +1,48 @@
+project:
+  name: 온서관
+  default_data_dir: data
+  default_output_dir: output
+
+operation:
+  stop_minutes_per_place: 30
+  buses_per_region: 3
+  stops_per_bus: 6
+  operation_limit_minutes: 360
+  nearby_bus_stop_radius_km: 0.5
+
+scoring_weights:
+  demand_score: 0.4
+  access_score: 0.3
+  public_score: 0.2
+  operation_score: 0.1
+
+demand:
+  elderly_weight: 0.7
+  youth_weight: 0.3
+
+accessibility:
+  max_distance_km_for_score: 1.0
+  nearby_stop_reference_count: 5
+
+regions:
+  jinan:
+    label: 진안군
+    route_prefix: 진안
+    hub_library_name: 전북특별자치도교육청진안도서관
+    population_file: 진안_202604_202604_연령별인구현황_월간.csv
+    fallback_hub:
+      name: 전북특별자치도교육청진안도서관
+      address: 전북특별자치도 진안군 진안읍 대성길 7
+      lat: 35.7895333
+      lon: 127.4222654
+
+  imsil:
+    label: 임실군
+    route_prefix: 임실
+    hub_library_name: 임실군립도서관
+    population_file: 임실_202604_202604_연령별인구현황_월간.csv
+    fallback_hub:
+      name: 임실군립도서관
+      address: 전북특별자치도 임실군 임실읍 봉황로 75
+      lat: 35.6130
+      lon: 127.2792

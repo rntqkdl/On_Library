@@ -1,0 +1,31 @@
+facility_keywords:
+  town_office:
+    - 면사무소
+    - 군청
+    - 행정복지센터
+    - 주민센터
+
+  village_center:
+    - 마을회관
+    - 경로당
+    - 회관
+
+  school:
+    - 초교
+    - 초등학교
+    - 중학교
+    - 고등학교
+    - 학교
+
+  library:
+    - 도서관
+
+  health_center:
+    - 보건
+    - 의료원
+    - 보건소
+    - 진료소
+
+  terminal:
+    - 터미널
+    - 버스정류소

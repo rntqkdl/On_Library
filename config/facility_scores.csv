@@ -1,0 +1,11 @@
+facility_type,facility_label,public_score,operation_score,reason
+town_office,면사무소·군청,5.0,4.2,행정 공공거점이며 주민 방문 가능성이 높음
+village_center,마을회관·경로당·노인복지시설,4.6,3.8,고령층 생활권과 직접 연결되는 커뮤니티 거점
+school,학교,4.4,3.6,청소년 교육 거점
+health_center,보건·의료시설,4.7,3.7,고령층 방문 가능성이 높은 보건복지 거점
+terminal,터미널·교통거점,4.3,4.4,대중교통 접근성이 높은 교통 거점
+culture_space,문화공간·다중이용시설,4.2,3.5,문화복지 확산 거점
+welfare_center,주민복지시설,4.5,3.7,지역 복지서비스 거점
+playground,어린이놀이시설,3.8,3.3,아동·보호자 생활권 거점
+pharmacy,약국,3.7,3.2,생활 의료 접근 거점
+default,기타,3.5,3.0,기본 후보지
